@@ -1,4 +1,6 @@
+import AlertDialog from "@/components/common/AlertDialog";
 import { useDialog } from "@/context/DialogContext";
+import { useDebounce } from "@/hooks/useDebounce";
 import {
   Avatar,
   Badge,
@@ -12,14 +14,12 @@ import {
 import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import moment from "moment/moment";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import toast from "react-hot-toast";
+import { useSearchParams } from "react-router";
 import DataTable from "../../components/common/DataTable";
 import { deleteTodos, getTodos } from "../../services/todo.service";
 import HomeDialog from "./HomeDialog";
-import AlertDialog from "@/components/common/AlertDialog";
-import { useDebounce } from "@/hooks/useDebounce";
-import { useSearchParams } from "react-router";
-import toast from "react-hot-toast";
 
 const HOME_DIALOG = "HOME_DIALOG";
 
@@ -48,7 +48,14 @@ const Home = () => {
       closeDialog();
       toast.success("Todo deleted successfully");
     },
+    onError: (error) => {
+      toast.error(
+        error?.response?.data?.msg || "Something went wrong, please try again later."
+      );
+      closeDialog();
+    }
   });
+
 
   useEffect(() => {
     if (todos) {
@@ -181,13 +188,16 @@ const Home = () => {
             py={2}
             _hover={{ bg: "green.600", color: "white" }}
             onClick={() => openDialog(HOME_DIALOG)}
+            // onClick={()=>{
+            //   throw new Error("Test global boundary!");
+            // }}
           >
             Add Todo
           </Button>
         </Box>
       </Container>
       <Container mt={4} boxShadow={"md"} rounded={"md"} p={0}  mb={"5"}>
-        <DataTable data={data} columns={columns} isLoading={isFetching} />
+        <DataTable data={data} columns={columns} isLoading={isFetching} pageSize={10} />
       </Container>
 
       <HomeDialog type={HOME_DIALOG} />
@@ -208,3 +218,15 @@ const Home = () => {
 };
 
 export default Home;
+
+function BuggyComponent() {
+  const [explode, setExplode] = useState(false);
+
+  if (explode) {
+    throw new Error("💥 Boom! Render error triggered!");
+  }
+
+  return (
+    <button onClick={() => setExplode(true)}>Trigger Error Boundary</button>
+  );
+}

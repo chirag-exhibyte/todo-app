@@ -15,6 +15,6 @@ export const updateTodos = async ({id , ...todoData}) => {
   return res.data;
 };
 export const deleteTodos = async ({id}) => {
-  const res = await api.delete(`/todo/${id}`);
+  const res = await api.post(`/todo/${id}`);
   return res.data;
 };

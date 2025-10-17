@@ -5,6 +5,7 @@ import PrivateRoute from "./PrivateRoute";
 import MainLayout from "../Layout/MainLayout";
 import About from "../pages/About";
 import Home from "../pages/Home/Home";
+import Registration from "@/pages/auth/Registration";
 
 const AppRoutes = () => {
   return (
@@ -12,6 +13,7 @@ const AppRoutes = () => {
       {/* Public Routes */}
       <Route element={<PublicRoute />}>
         <Route path="/login" element={<Login />} />
+        <Route path="/registration" element={<Registration />} />
       </Route>
 
       {/* Private Routes */}
