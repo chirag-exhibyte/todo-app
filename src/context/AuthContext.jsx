@@ -16,7 +16,12 @@ export const AuthProvider = ({ children }) => {
   const login = (data) => {
     setToken("Login SuccessFull");
     navigate("/");
-    toast.success("Login SuccessFull");
+    toast.success("Login Successfull");
+  };
+  const registration = (data) => {
+    setToken("Registaration SuccessFull");
+    navigate("/");
+    toast.success("Registaration Successfull");
   };
 
   const logout = () => {
@@ -27,7 +32,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout ,registration }}>
       {children}
     </AuthContext.Provider>
   );

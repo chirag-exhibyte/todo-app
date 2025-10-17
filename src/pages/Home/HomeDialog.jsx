@@ -79,6 +79,8 @@ const HomeDialog = ({ type: modelType }) => {
         lazyMount
         open={modelType === type}
         onExitComplete={handleReset}
+        preventScroll
+        trapFocus={false}
       >
         <Portal>
           <Dialog.Backdrop />
